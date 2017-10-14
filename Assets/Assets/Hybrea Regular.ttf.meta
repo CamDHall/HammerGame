@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: da89598273a1fa94fafd4e8040f22ec2
+timeCreated: 1507668821
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Hybrea
+  fontNames:
+  - Hybrea
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0421cb38553adb24dbffc94946a39e42, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
