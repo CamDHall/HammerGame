@@ -6,11 +6,11 @@ public class Spawner : MonoBehaviour {
 
     public static Spawner Instance;
 
-    public Dictionary<GameObject, Piece> pieces = new Dictionary<GameObject, Piece>();
-
-    public GameObject basic_block, explosive_block, bouncy_block;
+    public GameObject basic_ball, explosive_ball, bouncy_ball;
 
     float Timer;
+
+    public Dictionary<GameObject, Ball> balls = new Dictionary<GameObject, Ball>();
 
 	// Use this for initialization
 	void Start () {
@@ -28,16 +28,16 @@ public class Spawner : MonoBehaviour {
             switch (choice)
             {
                 case 0:
-                    Piece basic = new Piece(basic_block);
-                    pieces.Add(basic.Obj, basic);
+                    Ball basic = new Ball(basic_ball);
+                    balls.Add(basic.Obj, basic);
                     break;
                 case 1:
-                    Piece explosive = new Piece(explosive_block);
-                    pieces.Add(explosive.Obj, explosive);
+                    Ball bouncy = new Ball(bouncy_ball);
+                    balls.Add(bouncy.Obj, bouncy);
                     break;
                 case 2:
-                    Piece bouncy = new Piece(bouncy_block);
-                    pieces.Add(bouncy.Obj, bouncy);
+                    Ball explosive = new Ball(explosive_ball);
+                    balls.Add(explosive.Obj, explosive);
                     break;
             }
 
