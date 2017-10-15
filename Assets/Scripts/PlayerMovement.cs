@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+    public static PlayerMovement Instance;
+
     Rigidbody2D rb;
     BoxCollider2D bCollider;
 
@@ -12,20 +14,25 @@ public class PlayerMovement : MonoBehaviour {
     bool grounded, jumped = false;
 
     // For Position
-    Vector2 vel = new Vector2();
+    public Vector2 vel = new Vector2();
 
 	void Start () {
+        Instance = this;
+
         rb = GetComponent<Rigidbody2D>();
         bCollider = GetComponent<BoxCollider2D>();
 
+        // Scale variables to make assignment easier
         speed *= Time.deltaTime;
+        maxSpeed *= Time.deltaTime;
         jumpHeight *= Time.deltaTime;
         gravity *= Time.deltaTime;
 	}
 
     private void Update()
     {
-        if (!jumped && grounded && Input.GetKeyDown(KeyCode.Space)) {
+        // Jump
+        if (!jumped && grounded && Input.GetKeyDown(KeyCode.UpArrow)) {
             jumped = true;
         } 
     }
@@ -39,7 +46,6 @@ public class PlayerMovement : MonoBehaviour {
         if(left)
         {
             vel.x -= speed;
-            Debug.Log(vel.x);
         }
 
         if(right)
@@ -61,18 +67,24 @@ public class PlayerMovement : MonoBehaviour {
             jumped = false;
         }
 
+        // Gravity
         if(!grounded)
         {
             vel.y -= gravity;
         }
 
+        // Keep gravity from pushing the player through the floor
+        if(vel.y < 0 && grounded)
+        {
+            vel.y = 0;
+        }
+
         // Update position
         rb.MovePosition((Vector2)transform.position + vel);
 
-
-        // Check if on platfor
+        // Check if on platform
         Vector2 pt1 = transform.TransformPoint(bCollider.offset + new Vector2(bCollider.size.x / 2, -bCollider.size.y / 2));//(box.size / 2));
         Vector2 pt2 = transform.TransformPoint(bCollider.offset - (bCollider.size / 2) + new Vector2(0, 0));
-        grounded = Physics2D.OverlapArea(pt1, pt2, LayerMask.GetMask("Platform")) != null;
+        grounded = Physics2D.OverlapArea(pt1, pt2, LayerMask.GetMask("Object")) != null;
     }
 }
