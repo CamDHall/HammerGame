@@ -5,6 +5,7 @@ using UnityEngine;
 public class HammerController : MonoBehaviour {
 
     Queue<GameObject> detonatedBalls = new Queue<GameObject>();
+    Queue<GameObject> basicBalls = new Queue<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,11 @@ public class HammerController : MonoBehaviour {
 	void InvokeExplode()
     {
         Spawner.Instance.balls[detonatedBalls.Dequeue()].Explode();
+    }
+
+    void InvokeDestroy()
+    {
+        Spawner.Instance.balls[basicBalls.Dequeue()].DestroyBall();
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -32,6 +38,8 @@ public class HammerController : MonoBehaviour {
         if(coll.gameObject.tag == "BasicBall")
         {
             Spawner.Instance.balls[coll.gameObject].Score(1);
+            basicBalls.Enqueue(coll.gameObject);
+            Invoke("InvokeDestroy", 1);
         }
     }
 }
