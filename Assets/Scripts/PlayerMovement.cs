@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     public float speed, jumpHeight, gravity, maxSpeed;
 
     bool grounded, jumped = false;
+    bool shrink = false;
 
     // For Position
     public Vector2 vel = new Vector2();
@@ -34,7 +35,18 @@ public class PlayerMovement : MonoBehaviour {
         // Jump
         if (!jumped && grounded && Input.GetButtonDown("Jump")) {
             jumped = true;
-        } 
+        }
+        
+        // While holding down and larger than min height, shrink
+        if(Input.GetButton("Shrink") && transform.localScale.y >= 0.6f)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - Time.deltaTime, transform.localScale.z);
+        }
+
+        if (!Input.GetButton("Shrink") && transform.localScale.y < .91f)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + Time.deltaTime, transform.localScale.z);
+        }
     }
 
     void FixedUpdate () {
