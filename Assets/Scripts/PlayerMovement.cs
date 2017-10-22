@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Update()
     {
         // Jump
-        if (!jumped && grounded && Input.GetKeyDown(KeyCode.UpArrow)) {
+        if (!jumped && grounded && Input.GetButtonDown("Jump")) {
             jumped = true;
         } 
     }
@@ -40,8 +40,8 @@ public class PlayerMovement : MonoBehaviour {
     void FixedUpdate () {
 
         // Check for movement
-        bool left = Input.GetKey(KeyCode.LeftArrow);
-        bool right = Input.GetKey(KeyCode.RightArrow);
+        bool left = Input.GetButton("Left");
+        bool right = Input.GetButton("Right");
 
         if(left)
         {

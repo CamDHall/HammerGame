@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball {
+public abstract class Ball {
 
-    private GameObject p_Obj;
+    protected GameObject p_Obj;
 
 	public Ball (GameObject prefab_obj)
     {
@@ -20,5 +20,22 @@ public class Ball {
         {
             return p_Obj;
         }
+    }
+
+    public abstract void Explode();
+
+    public abstract void DoDamage(int amount);
+
+    public abstract void BounceBuff();
+
+    public void Score(int amount)
+    {
+        GameManager.Instance.score += amount;
+    }
+
+    public void DestroyBall()
+    {
+        Spawner.Instance.balls.Remove(p_Obj);
+        GameObject.Destroy(p_Obj);
     }
 }
