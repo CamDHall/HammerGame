@@ -15,12 +15,17 @@ public class HammerController : MonoBehaviour {
 	// Update is called once per frame
 	void InvokeExplode()
     {
-        Spawner.Instance.balls[detonatedBalls.Dequeue()].Explode();
+        // Checking to see collision hasn't been called already
+        GameObject obj = detonatedBalls.Dequeue();
+        if(obj != null)
+            Spawner.Instance.balls[obj].Explode();
     }
 
     void InvokeDestroy()
     {
-        Spawner.Instance.balls[basicBalls.Dequeue()].DestroyBall();
+        GameObject obj = basicBalls.Dequeue();
+        if(obj != null)
+            Spawner.Instance.balls[obj].DestroyBall();
     }
 
     void OnCollisionEnter2D(Collision2D coll)
