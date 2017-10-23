@@ -25,8 +25,10 @@ public class Spawner : MonoBehaviour {
         {
             int choice = Random.Range(0, 3);
 
-            Vector3 Pos = new Vector3(Spawner.Instance.transform.position.x + Random.Range(2, 5),
-                Spawner.Instance.transform.position.y + Random.Range(1, 4), 0);
+            Vector3 Pos = new Vector3(PlayerData.Instance.transform.position.x + Random.Range(2, 5),
+                PlayerMovement.Instance.transform.position.y + Random.Range(1, 4), 0);
+
+            Debug.Log(Pos + " \t" + PlayerMovement.Instance.transform.position.x);
 
             switch (choice)
             {
