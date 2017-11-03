@@ -25,5 +25,8 @@ public class BouncyBall : Ball
         
     }
 
-    
+    public override void Move()
+    {
+        
+    }
 }

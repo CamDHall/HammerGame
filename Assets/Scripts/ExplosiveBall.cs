@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class ExplosiveBall : Ball
 {
+    float startTime;
+    float journeyLength;
+    float initialY;
+
     public ExplosiveBall(GameObject prefab_obj) : base(prefab_obj)
     {
-
+        startTime = Time.time;
+        journeyLength = Vector2.Distance(prefab_obj.transform.position, PlayerMovement.Instance.transform.position);
+        initialY = PlayerMovement.Instance.transform.position.y;
     }
 
     public override void BounceBuff()
@@ -44,5 +50,26 @@ public class ExplosiveBall : Ball
         {
             Spawner.Instance.balls[ball].DestroyBall();
         }
+    }
+
+    public override void Move()
+    {
+        float timeElapsed = Time.time - startTime;
+        float fracJourney = timeElapsed / journeyLength;
+
+        // Set different steps for x and y
+        float yStep = Mathf.Cos(fracJourney * Mathf.PI * GameManager.Instance.ballSpeed * Time.deltaTime);
+        float xStep = Mathf.Sin(fracJourney * Mathf.PI * GameManager.Instance.ballSpeed);
+
+        float y = 0;
+        float x = 0;
+
+        // Lerp y to just below player's head, don't move back up
+        y = Mathf.Lerp(p_Obj.transform.position.y, initialY, yStep);
+
+        // X should circle
+        x = Mathf.Lerp(p_Obj.transform.position.x, PlayerMovement.Instance.transform.position.x, xStep);
+
+        p_Obj.transform.position = new Vector2(x, y);
     }
 }

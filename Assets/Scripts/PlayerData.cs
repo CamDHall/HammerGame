@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using UnityEngine.UI;
 
 public class PlayerData : MonoBehaviour {
 
     public static PlayerData Instance;
 
     public int health;
+    public GameObject restart;
 
 	void Start () {
         Instance = this;
@@ -27,7 +30,29 @@ public class PlayerData : MonoBehaviour {
 
     void Death()
     {
-        Debug.Log("YOU DIED");
+        // Save high school to txt file
+        int highestScore;
+
+        using (StreamReader reader = new StreamReader("Files/score.txt"))
+        {
+            highestScore = int.Parse(reader.ReadLine());
+        }
+
+        // Only write to score.txt if current score is higher than past
+        if (highestScore < GameManager.Instance.score)
+        {
+            using (StreamWriter writer = new StreamWriter("Files/score.txt"))
+            {
+                // Set new score text
+                restart.GetComponentsInChildren<Text>()[1].text = "Old Score: " + highestScore + "\tNew High School: " + GameManager.Instance.score;
+                writer.WriteLine(GameManager.Instance.score);
+            }
+        } else
+        {
+            restart.GetComponentsInChildren<Text>()[1].text = "High School: " + highestScore + "\tScore: " + GameManager.Instance.score;
+        }
+        // Activate restart button
+        restart.SetActive(true);
     }
 
     private void OnCollisionEnter2D(Collision2D coll)

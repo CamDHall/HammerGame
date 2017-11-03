@@ -21,13 +21,6 @@ public class HammerController : MonoBehaviour {
             Spawner.Instance.balls[obj].Explode();
     }
 
-    void InvokeDestroy()
-    {
-        GameObject obj = basicBalls.Dequeue();
-        if(obj != null)
-            Spawner.Instance.balls[obj].DestroyBall();
-    }
-
     void OnCollisionEnter2D(Collision2D coll)
     {
         if(coll.gameObject.tag == "ExplosiveBall")
@@ -44,7 +37,7 @@ public class HammerController : MonoBehaviour {
         {
             Spawner.Instance.balls[coll.gameObject].Score(1);
             basicBalls.Enqueue(coll.gameObject);
-            Invoke("InvokeDestroy", 1);
+            Spawner.Instance.balls[coll.gameObject].DestroyBall();
         }
     }
 }

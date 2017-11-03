@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour {
     public float speed, jumpHeight, gravity, maxSpeed;
 
     bool grounded, jumped = false;
-    bool shrink = false;
 
     // For Position
     public Vector2 vel = new Vector2();

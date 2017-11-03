@@ -10,11 +10,11 @@ public abstract class Ball {
 
 	public Ball (GameObject prefab_obj)
     {
-        Vector3 Pos = new Vector3(PlayerMovement.Instance.transform.position.x + Random.Range(1, 3),
-            PlayerMovement.Instance.transform.position.y + Random.Range(2, 4), 0);
+        Vector3 Pos = new Vector3(PlayerData.Instance.transform.position.x + Random.Range(3, 8),
+            PlayerMovement.Instance.transform.position.y + Random.Range(1, 4), 0);
         GameObject ball = UnityEngine.GameObject.Instantiate(prefab_obj);
         p_Obj = ball;
-        p_Obj.transform.position = new Vector3(4, -3.5f, 0);
+        p_Obj.transform.position = Pos;
         p_Obj.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 5, ForceMode2D.Impulse);
     }
 
@@ -42,6 +42,8 @@ public abstract class Ball {
     public abstract void DoDamage(int amount);
 
     public abstract void BounceBuff();
+
+    public abstract void Move();
 
     public void Score(int amount)
     {
