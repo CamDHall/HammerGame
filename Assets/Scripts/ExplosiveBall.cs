@@ -6,14 +6,19 @@ using UnityEngine;
 public class ExplosiveBall : Ball
 {
     float startTime;
-    float journeyLength;
-    float initialY;
+
+    private float RotateSpeed = 5f;
+    private float Radius = 0.5f;
+
+    private Vector2 _centre;
+    private float _angle;
 
     public ExplosiveBall(GameObject prefab_obj) : base(prefab_obj)
     {
         startTime = Time.time;
-        journeyLength = Vector2.Distance(prefab_obj.transform.position, PlayerMovement.Instance.transform.position);
-        initialY = PlayerMovement.Instance.transform.position.y;
+
+        _centre = p_Obj.transform.position;
+        
     }
 
     public override void BounceBuff()
@@ -54,22 +59,16 @@ public class ExplosiveBall : Ball
 
     public override void Move()
     {
-        float timeElapsed = Time.time - startTime;
-        float fracJourney = timeElapsed / journeyLength;
+        // Rotate
+        _angle += RotateSpeed * Time.deltaTime;
 
-        // Set different steps for x and y
-        float yStep = Mathf.Cos(fracJourney * Mathf.PI * GameManager.Instance.ballSpeed * Time.deltaTime);
-        float xStep = Mathf.Sin(fracJourney * Mathf.PI * GameManager.Instance.ballSpeed);
+        float stepAmount = (1f - Mathf.Cos(Time.time - startTime * Mathf.PI * 0.5f)) * (GameManager.Instance.ballSpeed * 0.25f);
 
-        float y = 0;
-        float x = 0;
+        // Move centre closer to player
+        _centre = Vector2.Lerp(_centre, PlayerMovement.Instance.transform.position, stepAmount);
 
-        // Lerp y to just below player's head, don't move back up
-        y = Mathf.Lerp(p_Obj.transform.position.y, initialY, yStep);
-
-        // X should circle
-        x = Mathf.Lerp(p_Obj.transform.position.x, PlayerMovement.Instance.transform.position.x, xStep);
-
-        p_Obj.transform.position = new Vector2(x, y);
+        // Move the ball in a circle
+        var offset = new Vector2(Mathf.Sin(_angle), Mathf.Cos(_angle)) * Radius;
+        p_Obj.transform.position = _centre + offset;
     }
 }

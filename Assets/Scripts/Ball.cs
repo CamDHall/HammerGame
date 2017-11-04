@@ -15,7 +15,6 @@ public abstract class Ball {
         GameObject ball = UnityEngine.GameObject.Instantiate(prefab_obj);
         p_Obj = ball;
         p_Obj.transform.position = Pos;
-        p_Obj.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 5, ForceMode2D.Impulse);
     }
 
     public GameObject Obj

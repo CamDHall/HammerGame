@@ -7,15 +7,20 @@ public class BasicBall : Ball
 {
     float startTime;
     float journeyLength;
-    bool missed = false; // X went pass the player
-    Vector3 destination;
+    Transform startingPos;
+    Vector2 endingPos;
 
     public BasicBall(GameObject prefab_obj) : base(prefab_obj)
     {
         startTime = Time.time;
 
-        destination = PlayerMovement.Instance.transform.position;
-        journeyLength = Vector2.Distance(prefab_obj.transform.position, PlayerMovement.Instance.transform.position);
+        startingPos = p_Obj.transform;
+        // Set y so it doesn't change when the player jumps
+        endingPos = new Vector2(PlayerMovement.Instance.transform.position.y, PlayerMovement.Instance.transform.position.y - 0.2f);
+
+        // Get distance from spawn point and player
+        journeyLength = Vector3.Distance(startingPos.position, endingPos);	//store total required distance of Lerp
+
     }
 
     public override void BounceBuff()
@@ -36,38 +41,10 @@ public class BasicBall : Ball
 
     public override void Move()
     {
-        if (!missed)
-        {
-            float timeElapsed = Time.time - startTime;
-            float fracJourney = timeElapsed / journeyLength;
+        float distCovered = (Time.time - startTime) * GameManager.Instance.ballSpeed;
+        float fracJourney = distCovered / journeyLength;
+        fracJourney = Mathf.Sin(fracJourney * Mathf.PI * 0.5f);
 
-            // apply sin
-            fracJourney = Mathf.Sin(fracJourney * Mathf.PI * GameManager.Instance.ballSpeed);
-
-            float y;
-
-            float x = Mathf.Lerp(p_Obj.transform.position.x, destination.x, fracJourney);
-            // Set y lower, so it doesn't hit the top of the player
-            if (Mathf.Abs(PlayerMovement.Instance.transform.position.x - x) > 2.25f)
-            {
-                y = Mathf.Lerp(p_Obj.transform.position.y, destination.y - 0.2f, fracJourney);
-            }
-            else
-            {
-                y = Mathf.Lerp(p_Obj.transform.position.y, destination.y - 0.2f, fracJourney * 3);
-            }
-
-            // Transform
-            p_Obj.transform.position = new Vector2(x, y);
-
-            Debug.Log(y);
-        }
-
-        // If it missed the player, drop and bounce
-        if(p_Obj.transform.position.x < destination.x)
-        {
-            missed = true;
-        }
-        
+        p_Obj.transform.position = Vector3.Lerp(startingPos.position, endingPos, fracJourney);
     }
 }
